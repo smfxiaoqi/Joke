@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.example.administrator.joke.Login_Activity">
+
+    <RelativeLayout
+        android:id="@+id/DengLuBiaoti"
+        android:background="@android:color/holo_orange_dark"
+        android:layout_width="match_parent"
+        android:layout_height="24pt"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <ImageButton
+            android:id="@+id/top_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_revert"
+            android:background="@android:color/holo_orange_dark"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:id="@+id/tvDuanWy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="登录"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/Login"
+        android:layout_below="@+id/DengLuBiaoti"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <ImageButton
+
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:paddingTop="30dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:src="@drawable/man"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Yonghu"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_below="@+id/Login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/manng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Login"/>
+
+        <EditText
+            android:id="@+id/edtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_username"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/LayoutPassword"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_below="@+id/Yonghu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"/>
+
+
+        <EditText
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:id="@+id/edtPassword"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_password"/>
+
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/ImgPassword"
+            android:src="@drawable/dark"
+            android:layout_width="32dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="right|center_vertical"/>
+
+
+    </FrameLayout>
+
+    <ImageButton
+        style="?android:attr/borderlessButtonStyle"
+        android:id="@+id/btnNoPassWord"
+        android:src="@drawable/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LayoutPassword"
+        android:layout_centerHorizontal="true"/>
+
+
+    <LinearLayout
+        android:id="@+id/TuBiao"
+        android:layout_below="@+id/btnNoPassWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <ImageButton
+        style="?android:attr/borderlessButtonStyle"
+        android:src="@drawable/xinglang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton4"
+        android:layout_alignTop="@+id/imageButton2"
+        android:layout_alignStart="@+id/youxian"/>
+
+    <ImageButton
+        style="?android:attr/borderlessButtonStyle"
+        android:src="@drawable/qq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton2"
+        android:layout_below="@+id/Wenzi"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"/>
+
+    <ImageButton
+
+        android:src="@drawable/renren"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton3"
+        android:layout_alignTop="@+id/imageButton2"
+        android:layout_toStartOf="@+id/imageButton2"
+        android:layout_marginEnd="37dp"/>
+
+    <LinearLayout
+        android:id="@+id/disanfang"
+        android:layout_below="@+id/btnNoPassWord"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我同意,《第三方软件协议》"
+        android:layout_below="@+id/imageButton4"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/checkBox"/>
+
+    <TextView
+        android:id="@+id/youxian"
+        android:text="_________________"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Wenzi"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/Wenzi"
+        android:text="第三方登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/zuoxian"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/zuoxian"
+        android:text="_________________"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TuBiao"
+        android:layout_toEndOf="@+id/TuBiao"
+        android:layout_marginTop="19dp"/>
+
+
+</RelativeLayout>
