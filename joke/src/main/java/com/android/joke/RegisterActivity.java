@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
             ButterKnife.inject(this);
             String protocol = "<font color=" + "\"" + "#AAAAAA" + "\">" + "点击"
                     + "\"" + "注册" + "\"" + "按钮,即表示你同意" + "</font>" + "<u>"
-                    + "<font color=" + "\"" + "#576B95" + "\">" + "《段王爷软件许可及服务协议》"
+                    + "<font color=" + "\"" + "#576B95" + "\">" + "《囧客软件许可及服务协议》"
                     + "</font>" + "</u>";
 
             tvProtocol.setText(Html.fromHtml(protocol));
