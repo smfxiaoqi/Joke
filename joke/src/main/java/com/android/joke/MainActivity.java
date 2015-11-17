@@ -140,30 +140,32 @@ private MyFragmentAdapter adapter;
                 }
                 @Override
                 public void onComplete(final Object response) {
+                    Log.v("MainActivity", "My QQ Info:\n" + response.toString());
 
-                    Message msg=new Message();
-                    msg.obj=response;
-                    msg.what=0;
+                    Message msg = new Message();
+                    msg.obj = response;
+                    msg.what = 0;
                     mHandler.sendMessage(msg);
-                    new Thread(){
+                    new Thread() {
+
                         @Override
                         public void run() {
-                            JSONObject json=(JSONObject)response;
-                            if (json.has("figureurl")){
-                                Bitmap bitmap=null;
+                            JSONObject json = (JSONObject) response;
+                            if (json.has("figureurl")) {
+                                Bitmap bitmap = null;
                                 try {
-                                    bitmap= QQUtil.getbitmap(json.getString("figureurl_qq_2"));
+                                    bitmap = QQUtil.getbitmap(json.getString("figureurl_qq_2"));
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+
                                 }
-                                Message msg=new Message();
-                                msg.obj=bitmap;
-                                msg.what=1;
+                                Message msg = new Message();
+                                msg.obj = bitmap;
+                                msg.what = 1;
                                 mHandler.sendMessage(msg);
                             }
                         }
-                    }.start();
 
+                    }.start();
                 }
 
                 @Override
