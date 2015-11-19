@@ -118,6 +118,9 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
         }
     }
+
+
+
     @OnClick(R.id.ImgPassword)
     public void imgClick(){
         if (isChecked){
