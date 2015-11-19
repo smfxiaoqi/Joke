@@ -1,9 +1,11 @@
 package com.android.joke;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -29,6 +31,7 @@ import com.tencent.tauth.UiError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,10 +53,19 @@ private MyFragmentAdapter adapter;
     private ImageFragment imageFragment;
     private List<Fragment> fragments;
     private List<String> titles;
+    private String nav_username=new String();
+    private Bitmap nav_userImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mTencent=LoginActivity.mTencent;
+
+        updateUserImg();
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setTitle("");
@@ -103,11 +115,11 @@ private MyFragmentAdapter adapter;
     }
 
     private void setDrawerContent(NavigationView navViewLogin) {
-       mTencent=LoginActivity.mTencent;
-        userImg=(ImageView)navViewLogin.findViewById(R.id.imgUsername);
-        username=(TextView)navViewLogin.findViewById(R.id.tvUsername);
-
-        updateUserImg();
+        View view=View.inflate(this,R.layout.login_nav,navViewLogin);
+        userImg=(ImageView)view.findViewById(R.id.imgUsername);
+        username=(TextView)view.findViewById(R.id.tvUsername);
+       // userImg.setImageBitmap(nav_userImage);
+       // username.setText(nav_username);
 
         // -- 左侧抽屉导航视图 菜单 ------------------------------
         // 导航视图中的菜单选中事件
@@ -132,12 +144,14 @@ private MyFragmentAdapter adapter;
     }
 
     private void updateUserImg() {
-        if (mTencent!=null&&mTencent.isSessionValid()){
-            IUiListener listener=new IUiListener() {
+        if (mTencent != null && mTencent.isSessionValid()) {
+            IUiListener listener = new IUiListener() {
+
                 @Override
                 public void onError(UiError e) {
 
                 }
+
                 @Override
                 public void onComplete(final Object response) {
                     Log.v("MainActivity", "My QQ Info:\n" + response.toString());
@@ -173,29 +187,34 @@ private MyFragmentAdapter adapter;
 
                 }
             };
-
-           mInfo=new UserInfo(this,mTencent.getQQToken());
+            mInfo = new UserInfo(this, mTencent.getQQToken());
             mInfo.getUserInfo(listener);
+
         }
     }
-    Handler mHandler=new Handler(){
+
+    Handler mHandler = new Handler() {
+
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what==0){
-                JSONObject response=(JSONObject)msg.obj;
-                if (response.has("nickname")){
+            if (msg.what == 0) {
+                JSONObject response = (JSONObject) msg.obj;
+                if (response.has("nickname")) {
                     try {
-                    username.setVisibility(View.VISIBLE);
-                    username.setText(response.getString("nickname"));
+                        nav_username=response.getString("nickname");
+
+                       username.setText(nav_username);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-            }else if (msg.what==1){
-                Bitmap bitmap=(Bitmap)msg.obj;
-                userImg.setImageBitmap(bitmap);
-                userImg.setVisibility(View.VISIBLE);
+            } else if (msg.what == 1) {
+                 nav_userImage = (Bitmap) msg.obj;
+               userImg.setImageBitmap(nav_userImage);
+
             }
         }
+
     };
+
 }
