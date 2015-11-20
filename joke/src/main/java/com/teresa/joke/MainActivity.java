@@ -1,11 +1,11 @@
 package com.teresa.joke;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
+
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,7 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.teresa.joke.util.QQUtil;
 import com.tencent.connect.UserInfo;
-import com.tencent.connect.auth.QQToken;
+
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
@@ -31,7 +31,7 @@ import com.tencent.tauth.UiError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,8 +118,7 @@ public class MainActivity extends AppCompatActivity {
         View view=View.inflate(this,R.layout.login_nav,navViewLogin);
         userImg=(ImageView)view.findViewById(R.id.imgUsername);
         username=(TextView)view.findViewById(R.id.tvUsername);
-        // userImg.setImageBitmap(nav_userImage);
-        // username.setText(nav_username);
+
 
         // -- 左侧抽屉导航视图 菜单 ------------------------------
         // 导航视图中的菜单选中事件
@@ -154,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onComplete(final Object response) {
-                    Log.v("MainActivity", "My QQ Info:\n" + response.toString());
-
                     Message msg = new Message();
                     msg.obj = response;
                     msg.what = 0;
@@ -201,9 +198,10 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject response = (JSONObject) msg.obj;
                 if (response.has("nickname")) {
                     try {
+                        username.setVisibility(View.VISIBLE);
                         nav_username=response.getString("nickname");
-
                         username.setText(nav_username);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -211,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (msg.what == 1) {
                 nav_userImage = (Bitmap) msg.obj;
                 userImg.setImageBitmap(nav_userImage);
+                userImg.setVisibility(View.VISIBLE);
 
             }
         }
