@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+  <LinearLayout
+      android:id="@+id/linear1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+  <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/comment_username_image"
+      android:src="@drawable/manng"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/comment_tv_username"
+      android:layout_gravity="center"
+      android:text="username"/>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_below="@+id/linear1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+  <EditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/tvContent"
+android:inputType="text"
+      android:layout_weight="1"
+      />
+  <ImageButton
+      android:id="@+id/ok"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/message"
+      style="@style/Base.Widget.AppCompat.Button.Borderless"
+      android:layout_marginLeft="10dp"/>
+  </LinearLayout>
+</RelativeLayout>
