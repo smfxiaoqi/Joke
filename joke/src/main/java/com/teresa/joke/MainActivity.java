@@ -290,8 +290,8 @@ private boolean status;//登录状态
 
     private Dialog ExitDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setIcon(R.drawable.card1);
-        builder.setTitle("系统信息");
+        builder.setIcon(R.drawable.cry);
+        builder.setTitle("真的离开吗？");
         builder.setMessage("确定要退出程序吗?");
         builder.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
