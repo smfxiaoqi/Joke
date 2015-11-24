@@ -1,7 +1,12 @@
 package com.teresa.joke;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +23,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,8 +72,12 @@ private boolean status;//登录状态
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
         mTencent = LoginActivity.mTencent;
         updateUserImg();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setTitle("");
@@ -159,10 +169,13 @@ private boolean status;//登录状态
                         case R.id.nav_register:
                             startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
                             break;
-
-
+                        case R.id.nav_logout:
+                            mTencent.logout(getApplicationContext());
+                            JokeUtil.savePreferences(getApplicationContext(), 0, null, null, null);
+                            finish();
+                            break;
                     }
-
+                    return true;
                 }
                 // 选择后自动关闭左侧抽屉
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -267,5 +280,31 @@ private boolean status;//登录状态
         }
 
     };
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            ExitDialog(MainActivity.this).show();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
+    private Dialog ExitDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setIcon(R.drawable.card1);
+        builder.setTitle("系统信息");
+        builder.setMessage("确定要退出程序吗?");
+        builder.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+        return builder.create();
+    }
 }
