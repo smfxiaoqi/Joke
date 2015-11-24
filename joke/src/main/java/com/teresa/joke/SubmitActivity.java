@@ -72,3 +72,4 @@ public class SubmitActivity extends AppCompatActivity {
         VolleyUtil.getInstance(this).cancelRequests("submit_req");
     }
 }
+

@@ -11,7 +11,7 @@
 
   <string name="btn_register">注册</string>
   <string name="hint_username">用户名</string>
-  <string name="hint_password">设置密码,至少6-12位数字或字母</string>
+  <string name="hint_password">至少6-12位数字或字母</string>
   <string name="hint_repassword">重复密码</string>
   <string name="hint_email">Email</string>
   <string name="register_username">用户注册</string>

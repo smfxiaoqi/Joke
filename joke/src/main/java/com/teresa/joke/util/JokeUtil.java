@@ -2,12 +2,21 @@ package com.teresa.joke.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by Admin on 2015/11/9.
  */
 public class JokeUtil {
+
     public static void toast(Context context, CharSequence text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
@@ -18,6 +27,8 @@ public class JokeUtil {
 
     // -- 选项存储 (记录用户的偏好)--------------------------------
     // 定义访问模式
+    private static final File previewTempFile=new File(Environment.getExternalStorageDirectory()
+    +"/joke/userImage/previewTempFile.jpg");
     private static int MODE = Context.MODE_PRIVATE;
     // 定义SharedPreferences名称,该名称和在Android系统中保存的文件同名
     private static final String PREFERENCE_NAME = "JokeSettings";
@@ -47,10 +58,10 @@ public class JokeUtil {
      *
      * @param context
      * @param username
-     * @param status
+     * @param password
      */
     public static void savePreferences(Context context,
-                                       int id, String username, String nickname, String status) {
+                                       int id, String username, String nickname, String password) {
         // 保存用户信息到选项存储
         SharedPreferences preferences =
                 context.getSharedPreferences(PREFERENCE_NAME, MODE);
@@ -58,7 +69,7 @@ public class JokeUtil {
         editor.putInt("id", id);
         editor.putString("username", username);
         editor.putString("nickname", nickname);
-        editor.putString("status", status);
+        editor.putString("password", password);
         editor.commit();
     }
 
@@ -72,5 +83,36 @@ public class JokeUtil {
         SharedPreferences preferences =
                 context.getSharedPreferences(PREFERENCE_NAME, MODE);
         return preferences.getString("username", "");
+    }
+    //保存用户头像到本地
+    public static void saveUserImg(Bitmap userImage){
+if(previewTempFile!=null){
+    previewTempFile.delete();
+}else{
+    try {
+        previewTempFile.createNewFile();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    FileOutputStream fout=null;
+    try {
+        fout=new FileOutputStream(previewTempFile);
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+    userImage.compress(Bitmap.CompressFormat.JPEG,100,fout);
+    try {
+        fout.flush();
+        fout.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+}
+    }
+    //返回用户头像
+    public static Bitmap getUserImage(){
+        Bitmap userBitmap= BitmapFactory.decodeFile(previewTempFile.getPath());
+        return userBitmap;
     }
 }

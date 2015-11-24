@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -72,20 +73,31 @@ public class LoginActivity extends AppCompatActivity {
     };
 
     private class BaseUiListener implements IUiListener {
-
+        boolean qqYes=true;
         @Override
         public void onComplete(Object response) {
             if (null == response) {
                 QQUtil.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
+                 qqYes=false;
                 return;
             }
             JSONObject jsonResponse = (JSONObject) response;
             if (null != jsonResponse && jsonResponse.length() == 0) {
                 QQUtil.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
+                qqYes=false;
                 return;
             }
+            // QQUtil.showResultDialog(LoginActivity.this, response.toString(), "登录成功"
+            //JokeUtil.savePreferences(getApplicationContext(),1,);
 
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            Intent qqLogin=getIntent();
+            qqLogin.putExtra("qqLogined", qqYes);
+          //  qqLogin.setData();
+            setResult(MainActivity.RESULT_OK, qqLogin);
+            LoginActivity.this.finish();
+            //startActivity(qqLogin);
+
+
         }
 
         protected void doComplete(JSONObject values) {
@@ -140,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
         params.put("password",password);
 
         MyJsonObjectRequest request=new MyJsonObjectRequest(Request.Method.POST,
-                VolleyUtil.getAbsoluteUrl("登录服务器的JSON格式文件"), params,
+                VolleyUtil.getAbsoluteUrl("userAction_findUser"), params,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
@@ -148,13 +160,18 @@ public class LoginActivity extends AppCompatActivity {
                             if (jsonObject.getInt("id")==0){
                                 JokeUtil.toast(getApplicationContext(),R.string.user_invalid);
                             }else {
+                                //把用户名、密码、昵称存进选项存储
                                 JokeUtil.savePreferences(getApplicationContext(),
                                         jsonObject.getInt("id"),
                                         jsonObject.getString("username"),
                                         jsonObject.getString("password"),
                                         jsonObject.getString("nickname"));
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                //把昵称数据发送给其他Activity进行设置
 
+                                JokeUtil.toast(getApplicationContext(),jsonObject.getString("username")+
+                                        jsonObject.getString("password")+jsonObject.getString("nickname")
+                                );
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
                             }
                         } catch (Exception e) {

@@ -17,7 +17,7 @@ import com.android.volley.toolbox.Volley;
  */
 public class VolleyUtil {
     public static final String TAG = VolleyUtil.class.getSimpleName();
-    public static final String BASE_URL = "服务器地址IP";
+    public static final String BASE_URL = "http://192.168.30.100:8087/JOKES/";
 
     private static VolleyUtil mInstance;
     private RequestQueue mRequestQueue;

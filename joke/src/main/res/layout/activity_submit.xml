@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.teresa.joke.SubmitActivity">
-    <EditText
-        android:id="@+id/submit_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="写下你的段子"
-        android:background="@android:color/holo_green_dark"/>
+<EditText
+    android:id="@+id/submit_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:hint="写下你的段子"
+    android:background="@android:color/holo_green_dark"/>
     <Button
         android:id="@+id/btnSubmit"
         android:onClick="submit"

@@ -1,36 +1,41 @@
 package com.teresa.joke;
 
-
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
-
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
+import android.text.style.ImageSpan;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.teresa.joke.util.QQUtil;
 import com.tencent.connect.UserInfo;
-
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+import com.teresa.joke.util.JokeUtil;
+import com.teresa.joke.util.QQUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     //private int[] tabImg;
 
-    public static Tencent mTencent;
-    // QQ用户信息
-    private UserInfo mInfo;
-
     private MyFragmentAdapter adapter;
     private DrawerLayout drawerLayout;
     private ImageView userImg;
@@ -53,22 +54,24 @@ public class MainActivity extends AppCompatActivity {
     private ImageFragment imageFragment;
     private List<Fragment> fragments;
     private List<String> titles;
-    private String nav_username=new String();
+    private String nav_username;
     private Bitmap nav_userImage;
+    private NavigationView navView;
 
+    public static Tencent mTencent;
+    // QQ用户信息
+    private UserInfo mInfo;
+private boolean status;//登录状态
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mTencent=LoginActivity.mTencent;
-
+        mTencent = LoginActivity.mTencent;
         updateUserImg();
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setTitle("");
+        //BitmapDrawable bd=new BitmapDrawable(nav_userImage);
         toolbar.setNavigationIcon(R.drawable.gerenxinxi);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,11 +83,9 @@ public class MainActivity extends AppCompatActivity {
         titles = new ArrayList<>();
         // 抽屉布局
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        // 导航视图
-        NavigationView navViewLogin = (NavigationView) findViewById(R.id.nav_view);
-        if (navViewLogin != null) {
-            setDrawerContent(navViewLogin);
-        }
+
+        navView = (NavigationView) findViewById(R.id.nav_view);
+
 
         tablayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -101,12 +102,28 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, this, titles);
         viewPager.setAdapter(adapter);
         tablayout.setupWithViewPager(viewPager);
+        navView = (NavigationView) findViewById(R.id.nav_view);
+        //判断用户是否登录过
+        if (JokeUtil.isLogined(getApplicationContext())) {
+            //登陆过。加载已登录导航
+             status=true;
+            //从本地文件获取用户头像
+            //nav_userImage=JokeUtil.getUserImage();
+            //userImg.setImageBitmap(nav_userImage);
+            //navView.inflateMenu(R.menu.menu_logined_nav);
+        } else {
+            status=false;
+            //navView.inflateMenu(R.menu.drawer_view);
+        }
+        Log.i("MainActivity",String.valueOf(status)+"**********");
+        setDrawerContent(navView, status);
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -114,25 +131,38 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setDrawerContent(NavigationView navViewLogin) {
-        View view=View.inflate(this,R.layout.login_nav,navViewLogin);
-        userImg=(ImageView)view.findViewById(R.id.imgUsername);
-        username=(TextView)view.findViewById(R.id.tvUsername);
-
-
+    //初始化抽屉登录布局
+    private void setDrawerContent(final NavigationView navView, final boolean status) {
+        View view = View.inflate(this, R.layout.login_nav, navView);
+        userImg = (ImageView) view.findViewById(R.id.imgUsername);
+        username = (TextView) view.findViewById(R.id.tvUsername);
+        if(status==true||getIntent().getBooleanExtra("ifLogined",false)==true){
+            navView.getMenu().setGroupVisible(R.id.nav_view,false);
+            navView.inflateMenu(R.menu.menu_logined_nav);
+        }else if(status==false||getIntent().getBooleanExtra("ifLogined",false)==false){
+            navView.getMenu().setGroupVisible(R.id.nav_view,false);
+            navView.inflateMenu(R.menu.drawer_view);
+       }
         // -- 左侧抽屉导航视图 菜单 ------------------------------
         // 导航视图中的菜单选中事件
-        navViewLogin.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    // 匹配菜单的选项 (其它选项的处理 省略)
-                    case R.id.nav_login:
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                        break;
-                    case R.id.nav_register:
-                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-                        break;
+                if (status == false) {
+                    switch (menuItem.getItemId()) {
+                        // 匹配菜单的选项 (其它选项的处理 省略)
+                        case R.id.nav_login:
+                            //点击登录，跳到登录页面，返回一个是否成功登录的值，采用回调函数
+                            Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivityForResult(loginIntent, 100);
+                            break;
+                        case R.id.nav_register:
+                            startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                            break;
+
+
+                    }
+
                 }
                 // 选择后自动关闭左侧抽屉
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -140,6 +170,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100) {
+            if (resultCode == RESULT_OK) {
+                status = data.getBooleanExtra("qqLogined", false);
+                Log.i("MainActivity", String.valueOf(status) + "qq success");
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("ifLogined",status);
+                startActivity(intent);
+            }
+        }
     }
 
     private void updateUserImg() {
@@ -153,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onComplete(final Object response) {
+                    Log.v("MainActivity", "My QQ Info:\n" + response.toString());
+
                     Message msg = new Message();
                     msg.obj = response;
                     msg.what = 0;
@@ -166,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
                                 Bitmap bitmap = null;
                                 try {
                                     bitmap = QQUtil.getbitmap(json.getString("figureurl_qq_2"));
+                                    //JokeUtil.saveUserImg(bitmap);
                                 } catch (JSONException e) {
 
                                 }
@@ -198,10 +251,10 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject response = (JSONObject) msg.obj;
                 if (response.has("nickname")) {
                     try {
-                        username.setVisibility(View.VISIBLE);
-                        nav_username=response.getString("nickname");
-                        username.setText(nav_username);
+                        nav_username = response.getString("nickname");
 
+                        username.setText(nav_username);
+                        JokeUtil.savePreferences(getApplicationContext(), 1, nav_username, null, null);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -209,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (msg.what == 1) {
                 nav_userImage = (Bitmap) msg.obj;
                 userImg.setImageBitmap(nav_userImage);
-                userImg.setVisibility(View.VISIBLE);
 
             }
         }

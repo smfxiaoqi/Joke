@@ -29,6 +29,7 @@ import com.teresa.joke.util.JokeUtil;
 import com.teresa.joke.util.MyJsonObjectRequest;
 import com.teresa.joke.util.VolleyUtil;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -175,12 +176,22 @@ public void upload_image_user(){
             params.put("nickname", txtNickname.getText().toString());
 
             MyJsonObjectRequest request=new MyJsonObjectRequest(Request.Method.POST,
-                    VolleyUtil.getAbsoluteUrl("服务器名称"),
+                    VolleyUtil.getAbsoluteUrl("userAction_addUser"),
                     params,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jo) {
-
+                            try {
+                                String statusRegister=jo.getString("number");
+                                int status=Integer.parseInt(statusRegister);
+                                if(status>0){
+                                    JokeUtil.toast(getApplicationContext(),"注册成功");
+                                }else{
+                                    JokeUtil.toast(getApplicationContext(),"此用户已注册");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override

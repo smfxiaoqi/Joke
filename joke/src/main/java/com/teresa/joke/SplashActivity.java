@@ -12,7 +12,6 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         View view=View.inflate(this,R.layout.activity_splash,null);
         setContentView(view);
-
         AlphaAnimation animation=new AlphaAnimation(0.3f,1.0f);
         animation.setDuration(1500);
         view.startAnimation(animation);

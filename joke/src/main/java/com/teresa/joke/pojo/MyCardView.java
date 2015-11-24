@@ -10,13 +10,18 @@ import android.widget.TextView;
  * Created by Administrator on 15-11-17.
  */
 public class MyCardView extends CardView{
+    //卡片用户头像
     private int card_image_username;
+    //卡片用户名
     private String card_tv_username;
+    //卡片发布时间
     private String card_tv_submitTime;
+    //卡片文字内容
     private String cardview_content;
     //卡片里的点赞数、评论数
     private int countGood;
     private int countComment;
+    //内容是图片的卡片
     private int card_image_content;
 
     public int getCard_image_content() {
