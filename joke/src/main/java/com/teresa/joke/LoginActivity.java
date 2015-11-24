@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 QQUtil.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
                 return;
             }
-            // QQUtil.showResultDialog(LoginActivity.this, response.toString(), "登录成功");
+
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
