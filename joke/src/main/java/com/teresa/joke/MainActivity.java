@@ -6,7 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -45,6 +52,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -75,7 +84,7 @@ private boolean status;//登录状态
 
 
 
-        mTencent = LoginActivity.mTencent;
+       mTencent = LoginActivity.mTencent;
         updateUserImg();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -146,13 +155,18 @@ private boolean status;//登录状态
         View view = View.inflate(this, R.layout.login_nav, navView);
         userImg = (ImageView) view.findViewById(R.id.imgUsername);
         username = (TextView) view.findViewById(R.id.tvUsername);
-        if(status==true||getIntent().getBooleanExtra("ifLogined",false)==true){
-            navView.getMenu().setGroupVisible(R.id.nav_view,false);
+
+
+
+
+
+        if(status == true||getIntent().getBooleanExtra("ifLogined",false)==true){
+            navView.getMenu().setGroupVisible(R.id.nav_view, false);
             navView.inflateMenu(R.menu.menu_logined_nav);
-        }else if(status==false||getIntent().getBooleanExtra("ifLogined",false)==false){
-            navView.getMenu().setGroupVisible(R.id.nav_view,false);
+        } else if (status == false || getIntent().getBooleanExtra("ifLogined", false) == false) {
+            navView.getMenu().setGroupVisible(R.id.nav_view, false);
             navView.inflateMenu(R.menu.drawer_view);
-       }
+        }
         // -- 左侧抽屉导航视图 菜单 ------------------------------
         // 导航视图中的菜单选中事件
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -171,11 +185,12 @@ private boolean status;//登录状态
                             break;
                         case R.id.nav_logout:
                             mTencent.logout(getApplicationContext());
-                            JokeUtil.savePreferences(getApplicationContext(), 0, null, null, null);
+                            JokeUtil.clearData();
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
                             finish();
                             break;
                     }
-                    return true;
+
                 }
                 // 选择后自动关闭左侧抽屉
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -184,6 +199,8 @@ private boolean status;//登录状态
         });
 
     }
+
+
 
     @Override
     protected void onResume() {
@@ -201,6 +218,7 @@ private boolean status;//登录状态
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 intent.putExtra("ifLogined",status);
                 startActivity(intent);
+                finish();
             }
         }
     }
@@ -231,7 +249,7 @@ private boolean status;//登录状态
                                 Bitmap bitmap = null;
                                 try {
                                     bitmap = QQUtil.getbitmap(json.getString("figureurl_qq_2"));
-                                    //JokeUtil.saveUserImg(bitmap);
+                                    JokeUtil.saveUserImg(bitmap);
                                 } catch (JSONException e) {
 
                                 }
@@ -280,7 +298,7 @@ private boolean status;//登录状态
         }
 
     };
-    @Override
+   /* @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             ExitDialog(MainActivity.this).show();
@@ -306,5 +324,37 @@ private boolean status;//登录状态
                     }
                 });
         return builder.create();
+    }*/
+   @Override
+   public boolean onKeyDown(int keyCode, KeyEvent event) {
+       // TODO Auto-generated method stub
+       if(keyCode == KeyEvent.KEYCODE_BACK)
+       {
+           exitBy2Click();      //调用双击退出函数
+       }
+       return false;
+   }
+    /**
+     * 双击退出函数
+     */
+    private static Boolean isExit = false;
+
+    private void exitBy2Click() {
+        Timer tExit = null;
+        if (isExit == false) {
+            isExit = true; // 准备退出
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            tExit = new Timer();
+            tExit.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isExit = false; // 取消退出
+                }
+            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+
+        } else {
+            finish();
+            System.exit(0);
+        }
     }
 }
