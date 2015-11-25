@@ -54,7 +54,6 @@ public class JokeUtil {
         }
         return flag;
     }
-
     /**
      * 登录成功,保存用户信息到 选项存储
      *
