@@ -33,6 +33,8 @@ public class JokeUtil {
     // 定义SharedPreferences名称,该名称和在Android系统中保存的文件同名
     private static final String PREFERENCE_NAME = "JokeSettings";
 
+    private static SharedPreferences preferences;
+
     /**
      * 是否已成功登录
      *
@@ -41,7 +43,7 @@ public class JokeUtil {
     public static boolean isLogined(Context context) {
         boolean flag = false;
         // 读取选项存储中的用户信息(类似于浏览器中的 Cookie)
-        SharedPreferences preferences =
+        preferences =
                 context.getSharedPreferences(PREFERENCE_NAME, MODE);
 
         int id = preferences.getInt("id", 0);
@@ -63,7 +65,7 @@ public class JokeUtil {
     public static void savePreferences(Context context,
                                        int id, String username, String nickname, String password) {
         // 保存用户信息到选项存储
-        SharedPreferences preferences =
+        preferences =
                 context.getSharedPreferences(PREFERENCE_NAME, MODE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("id", id);
@@ -80,7 +82,7 @@ public class JokeUtil {
      * @return
      */
     public static String getUsername(Context context) {
-        SharedPreferences preferences =
+        preferences =
                 context.getSharedPreferences(PREFERENCE_NAME, MODE);
         return preferences.getString("username", "");
     }
@@ -114,5 +116,8 @@ if(previewTempFile!=null){
     public static Bitmap getUserImage(){
         Bitmap userBitmap= BitmapFactory.decodeFile(previewTempFile.getPath());
         return userBitmap;
+    }
+    public static void clearData(){
+        preferences.edit().clear().commit();
     }
 }
