@@ -41,11 +41,9 @@
         android:layout_height="150dp"
         android:background="@android:color/white"
         android:orientation="vertical">
-        <ImageButton
-
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/login_image_user"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
             android:src="@drawable/man"/>
