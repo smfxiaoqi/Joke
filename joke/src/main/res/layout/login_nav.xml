@@ -3,7 +3,7 @@
               style="?android:attr/borderlessButtonStyle"
               android:layout_width="match_parent"
               android:layout_height="150dp"
-              android:background="@android:color/white"
+              android:background="@drawable/card1"
               android:orientation="vertical">
 
 
