@@ -27,4 +27,11 @@
   <string name="register_error">注册失败.</string>
   <string name="register_exist">用户名已存在</string>
   <string name="user_invalid">用户名或密码错误.</string>
+
+    <declare-styleable name="CircleImageView">
+      <attr format="dimension" name="border_width"/>
+      <attr format="color" name="border_color"/>
+      <attr format="boolean" name="border_overlay"/>
+    </declare-styleable>
+
 </resources>
