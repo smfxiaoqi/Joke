@@ -60,13 +60,13 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int TAKE_PHOTO = 0;
     private static final int CHOOSE_PHOTO = 1;
 
-    private ImageButton login_image_user;
+    private ImageView login_image_user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.inject(this);
-login_image_user=(ImageButton)findViewById(R.id.login_image_user);
+login_image_user=(ImageView)findViewById(R.id.login_image_user);
         String protocol = "<font color=" + "\"" + "#AAAAAA" + "\">" + "点击"
                 + "\"" + "注册" + "\"" + "按钮,即表示你同意" + "</font>" + "<u>"
                 + "<font color=" + "\"" + "#576B95" + "\">" + "《段王爷软件许可及服务协议》"
