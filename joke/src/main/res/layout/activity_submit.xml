@@ -1,22 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.teresa.joke.SubmitActivity">
-<EditText
-    android:id="@+id/submit_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:hint="写下你的段子"
-    android:background="@android:color/holo_green_dark"/>
-    <Button
-        android:id="@+id/btnSubmit"
-        android:onClick="submit"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/bj"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/DengLuBiaoti"
+        android:background="@color/bj"
+        android:layout_width="match_parent"
+        android:layout_height="24pt">
+
+        <ImageButton
+            android:id="@+id/top_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_revert"
+            android:background="@color/bj"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:textColorHint="@color/ziti"
+            android:id="@+id/tvDuanWy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:hint="投稿"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bj"
+            android:text="提交"
+            android:onClick="submit"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/submit_container"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/TextBj"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+<ScrollView
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <EditText
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:inputType="textMultiLine"
+        android:background="@null"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="提交"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_alignParentRight="true"/>
-</RelativeLayout>
+        android:textSize="18sp"
+        android:gravity="left|top"
+        android:hint="您的投稿经过段友审核才能发布哦！我们的目标是:专注内涵，拒绝黄反！可以矫情，不要煽情！
+   敬告:发布色情敏感内容会被封号处理。"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/submit_content"/>
+
+    </LinearLayout>
+</ScrollView>
+        <LinearLayout
+            android:background="@color/TextBj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="1">
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="54dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tupian"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/imageButton"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="匿名"
+            android:paddingRight="20dp"
+            android:layout_marginLeft="200dp"
+            android:layout_gravity="center_vertical"
+            android:layout_alignBottom="@+id/imageButton"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/imageButton"
+            />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

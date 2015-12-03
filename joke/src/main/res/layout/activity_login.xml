@@ -7,54 +7,25 @@
     android:background="@android:color/white"
     tools:context="com.example.administrator.joke.Login_Activity">
 
-    <RelativeLayout
-        android:id="@+id/DengLuBiaoti"
-        android:background="@android:color/holo_orange_dark"
-        android:layout_width="match_parent"
-        android:layout_height="24pt"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
 
-        <ImageButton
-            android:id="@+id/top_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_revert"
-            android:background="@android:color/holo_orange_dark"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"/>
-        <TextView
-            android:id="@+id/tvDuanWy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="登录"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
-
-
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/Login"
         android:layout_below="@+id/DengLuBiaoti"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:background="@android:color/white"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <ImageButton
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:paddingTop="30dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/man"/>
+            android:src="@drawable/mao"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/Yonghu"
@@ -71,6 +42,7 @@
             android:layout_below="@+id/Login"/>
 
         <EditText
+            android:textColorHint="@color/ziti"
             android:id="@+id/edtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,6 +67,7 @@
 
 
         <EditText
+            android:textColorHint="@color/ziti"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:id="@+id/edtPassword"
@@ -115,16 +88,37 @@
 
     </FrameLayout>
 
-    <ImageButton
-        style="?android:attr/borderlessButtonStyle"
+    <Button
         android:id="@+id/btnNoPassWord"
-        android:src="@drawable/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textColor="@color/ziti"
+        style="@android:style/DeviceDefault.ButtonBar"
+        android:background="@color/Button"
+        android:text="登录"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
         android:layout_below="@+id/LayoutPassword"
-        android:layout_centerHorizontal="true"/>
-
-
+        android:layout_marginTop="20dp"/>
+    <FrameLayout
+        android:id="@+id/frame"
+        android:paddingBottom="30dp"
+        android:layout_below="@+id/btnNoPassWord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_below="@+id/btnNoPassWord"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/darker_gray"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:text="       第三方登录       "
+            android:paddingTop="23dp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
     <LinearLayout
         android:id="@+id/TuBiao"
         android:layout_below="@+id/btnNoPassWord"
@@ -134,35 +128,44 @@
 
     </LinearLayout>
 
-    <ImageButton
-        style="?android:attr/borderlessButtonStyle"
-        android:src="@drawable/xinglang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton4"
-        android:layout_alignTop="@+id/imageButton2"
-        android:layout_alignStart="@+id/youxian"/>
+    <LinearLayout
+        android:id="@+id/Laydisanfang"
+        android:layout_below="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageButton
-        style="?android:attr/borderlessButtonStyle"
-        android:src="@drawable/qq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton2"
-        android:layout_below="@+id/Wenzi"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"/>
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:src="@drawable/xinglang"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton4"
+            android:layout_alignTop="@+id/imageButton2"
+            android:layout_alignStart="@+id/youxian"
+            />
 
-    <ImageButton
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:src="@drawable/qq"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton2"
+            android:layout_above="@+id/checkBox"
+            android:layout_centerHorizontal="true"/>
 
-        android:src="@drawable/renren"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton3"
-        android:layout_alignTop="@+id/imageButton2"
-        android:layout_toStartOf="@+id/imageButton2"
-        android:layout_marginEnd="37dp"/>
+        <ImageButton
+            android:src="@drawable/renren"
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton3"
+            android:layout_alignTop="@+id/imageButton2"
+            android:layout_toStartOf="@+id/imageButton2"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/disanfang"
@@ -174,37 +177,16 @@
     </LinearLayout>
 
     <CheckBox
+        android:textColor="@color/ziti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我同意,《第三方软件协议》"
-        android:layout_below="@+id/imageButton4"
+        android:id="@+id/checkBox"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/checkBox"/>
+        android:layout_marginBottom="70dp"/>
 
-    <TextView
-        android:id="@+id/youxian"
-        android:text="_________________"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/Wenzi"
-        android:layout_alignParentEnd="true"/>
 
-    <TextView
-        android:id="@+id/Wenzi"
-        android:text="第三方登录"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/zuoxian"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/zuoxian"
-        android:text="_________________"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TuBiao"
-        android:layout_toEndOf="@+id/TuBiao"
-        android:layout_marginTop="19dp"/>
 
 
 </RelativeLayout>
