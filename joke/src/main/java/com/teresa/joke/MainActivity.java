@@ -1,10 +1,8 @@
 package com.teresa.joke;
 
-
-
 import android.content.Intent;
 import android.graphics.Bitmap;
-
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
@@ -13,19 +11,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
+import android.support.v7.internal.app.ToolbarActionBar;
 import android.support.v7.widget.Toolbar;
-
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.KeyEvent;
-
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +34,8 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.teresa.joke.util.JokeUtil;
+import com.teresa.joke.util.PollingService;
+import com.teresa.joke.util.PollingUtil;
 import com.teresa.joke.util.QQUtil;
 
 import org.json.JSONException;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MyFragmentAdapter adapter;
     private DrawerLayout drawerLayout;
-    private ImageView userImg;
+    private CircleImageView userImg;
     private TextView username;
     private TextFragment textFragment;
     private ImageFragment imageFragment;
@@ -124,10 +126,18 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("MainActivity", String.valueOf(status) + "**********");
         setDrawerContent(navView, status);
-
+        // 开启轮询
+        PollingUtil.startPollingService(this, 20, PollingService.class,
+                PollingService.ACTION);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 停止轮询
+        PollingUtil.stopPollingService(this, PollingService.class,
+                PollingService.ACTION);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -141,8 +151,10 @@ public class MainActivity extends AppCompatActivity {
     //初始化抽屉登录布局
     private void setDrawerContent(final NavigationView navView, final boolean status) {
         View view = View.inflate(this, R.layout.login_nav, navView);
-        userImg = (ImageView) view.findViewById(R.id.imgUsername);
+        userImg = (CircleImageView) view.findViewById(R.id.imgUsername);
         username = (TextView) view.findViewById(R.id.tvUsername);
+        String tvUsername=JokeUtil.getNickName(this);
+        username.setText(tvUsername);
         if (status == true || getIntent().getBooleanExtra("ifLogined", false) == true) {
             navView.getMenu().setGroupVisible(R.id.nav_view, false);
             navView.inflateMenu(R.menu.menu_logined_nav);
@@ -177,9 +189,17 @@ public class MainActivity extends AppCompatActivity {
                         JokeUtil.clearData();
                         //Toast.makeText(getApplicationContext(), String.valueOf(JokeUtil.isLogined(getApplicationContext())), Toast.LENGTH_SHORT).show();
                         //刷新界面
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
-
+                       startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                       finish();
+                        break;
+                    case R.id.personal:
+                        startActivity(new Intent(getApplicationContext(), PersonnalActivity.class));
+                        break;
+                    case R.id.nav_message:
+                        startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                        break;
+                    case R.id.nav_setting:
+                        startActivity(new Intent(getApplicationContext(),SettingActivity.class));
                 }
                 // 选择后自动关闭左侧抽屉
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -189,37 +209,34 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /** 捕捉按下返回键操作 */
+    long exitTime=0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            exitBy2Click();      //调用双击退出函数
+        // TODO 按两次返回键退出应用程序
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // 判断间隔时间 大于2秒就退出应用
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                // 应用名
+                //String applicationName = getResources().getString(R.string.app_name);
+                //String msg = "再按一次返回键退出" + applicationName;
+                String msg1 = "再按一次返回键回到桌面";
+                Toast.makeText(this, msg1, Toast.LENGTH_SHORT).show();
+                // 计算两次返回键按下的时间差
+                exitTime = System.currentTimeMillis();
+            } else {
+                // 关闭应用程序
+                //finish();
+                // 返回桌面操作
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
+            }
+            return true;
         }
-        return false;
+        return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 双击退出函数
-     */
-    private static Boolean isExit = false;
-
-    private void exitBy2Click() {
-        Timer tExit = null;
-        if (isExit == false) {
-            isExit = true; // 准备退出
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            tExit = new Timer();
-            tExit.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    isExit = false; // 取消退出
-                }
-            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
-
-        } else {
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -302,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.has("nickname")) {
                     try {
                         nav_username = response.getString("nickname");
-
+//Log.i("MainActivity","11111");
                         username.setText(nav_username);
                         JokeUtil.savePreferences(getApplicationContext(), 1, nav_username, null, null);
                     } catch (JSONException e) {

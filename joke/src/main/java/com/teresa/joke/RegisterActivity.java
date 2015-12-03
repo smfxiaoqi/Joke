@@ -43,6 +43,7 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity {
         @InjectView(R.id.txtUsername)
@@ -60,13 +61,13 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int TAKE_PHOTO = 0;
     private static final int CHOOSE_PHOTO = 1;
 
-    private ImageView login_image_user;
+    private CircleImageView login_image_user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.inject(this);
-login_image_user=(ImageView)findViewById(R.id.login_image_user);
+login_image_user=(CircleImageView)findViewById(R.id.login_image_user);
         String protocol = "<font color=" + "\"" + "#AAAAAA" + "\">" + "点击"
                 + "\"" + "注册" + "\"" + "按钮,即表示你同意" + "</font>" + "<u>"
                 + "<font color=" + "\"" + "#576B95" + "\">" + "《段王爷软件许可及服务协议》"
@@ -186,6 +187,7 @@ public void upload_image_user(){
                                 int status=Integer.parseInt(statusRegister);
                                 if(status>0){
                                     JokeUtil.toast(getApplicationContext(),"注册成功");
+                                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
                                 }else{
                                     JokeUtil.toast(getApplicationContext(),"此用户已注册");
                                 }
