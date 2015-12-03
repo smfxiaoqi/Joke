@@ -38,6 +38,7 @@ private List<Message> dataMessages;//系统消息数据集合
     private MessageAdapter adapter;
     private ListView listMessage;
     private int position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
