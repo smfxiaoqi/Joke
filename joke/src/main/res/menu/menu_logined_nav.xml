@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <group android:checkableBehavior="single">
     <item
-        android:id="@+id/nav_submission"
-        android:title="我要投稿"
+        android:id="@+id/personal"
+        android:title="个人空间"
         android:icon="@drawable/like"/>
     <item
-        android:id="@+id/nav_collect"
-        android:title="我的收藏"
+        android:id="@+id/nav_submission"
+        android:title="我要投稿"
         android:icon="@drawable/like"/>
     <item
         android:id="@+id/nav_message"
@@ -17,6 +17,14 @@
         android:id="@+id/nav_shake"
         android:title="摇一摇审核"
         android:icon="@drawable/shake"/>
+    <item
+        android:id="@+id/nav_setting"
+        android:title="设置"
+        android:icon="@drawable/like"/>
+    <item
+        android:id="@+id/nav_changeSkin"
+        android:title="换肤"
+        android:icon="@drawable/like"/>
     <item
         android:id="@+id/nav_logout"
         android:title="注销"
