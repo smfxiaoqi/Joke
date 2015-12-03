@@ -6,4 +6,8 @@
     <color name="cardview_initial_background">#3F51B5</color>
     <color name="jokeBackground">#FFFCFCF3</color>
     <color name="cardViewBackground">#70E9BD6D</color>
+    <color name="bj">#FFEE8C</color>
+    <color name="TextBj">#CCB0C682</color>
+    <color name="Button">#FFFCEEAC</color>
+    <color name="ziti">#FFD58616</color>
 </resources>
