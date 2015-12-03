@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Admin on 2015/11/9.
@@ -27,14 +28,12 @@ public class JokeUtil {
 
     // -- 选项存储 (记录用户的偏好)--------------------------------
     // 定义访问模式
-    private static final File previewTempFile=new File(Environment.getExternalStorageDirectory()
-    +"/joke/userImage/previewTempFile.jpg");
     private static int MODE = Context.MODE_PRIVATE;
     // 定义SharedPreferences名称,该名称和在Android系统中保存的文件同名
-    private static final String PREFERENCE_NAME = "JokeSettings";
-
-    private static SharedPreferences preferences;
-
+    private static final String USER = "User";
+    private static final String SYSTEM_MESSAGE= "SystemMessage";
+    private static SharedPreferences.Editor editor;
+private static SharedPreferences preferences;
     /**
      * 是否已成功登录
      *
@@ -44,7 +43,7 @@ public class JokeUtil {
         boolean flag = false;
         // 读取选项存储中的用户信息(类似于浏览器中的 Cookie)
         preferences =
-                context.getSharedPreferences(PREFERENCE_NAME, MODE);
+                context.getSharedPreferences(USER, MODE);
 
         int id = preferences.getInt("id", 0);
         String username = preferences.getString("username", "");
@@ -54,6 +53,7 @@ public class JokeUtil {
         }
         return flag;
     }
+
     /**
      * 登录成功,保存用户信息到 选项存储
      *
@@ -62,11 +62,11 @@ public class JokeUtil {
      * @param password
      */
     public static void savePreferences(Context context,
-                                       int id, String username, String nickname, String password) {
+                                       int id, String username, String password, String nickname) {
         // 保存用户信息到选项存储
         preferences =
-                context.getSharedPreferences(PREFERENCE_NAME, MODE);
-        SharedPreferences.Editor editor = preferences.edit();
+                context.getSharedPreferences(USER, MODE);
+        editor = preferences.edit();
         editor.putInt("id", id);
         editor.putString("username", username);
         editor.putString("nickname", nickname);
@@ -75,6 +75,20 @@ public class JokeUtil {
     }
 
     /**
+     * 把从服务器端传送过来的数据解析，存到选项存储
+     * @param messages
+     * @param number 消息编号,为了删除的时候方便找到对应的消息
+     */
+public void saveSystemMessage(Context context,String messages,int number){
+    preferences =
+            context.getSharedPreferences(SYSTEM_MESSAGE, MODE);
+     editor=preferences.edit();
+    editor.putString("message" + number, messages);
+}
+    public void deleteSystemMessage(Context context,int number){
+        editor.remove("message" + number);
+    }
+    /**
      * 返回当前已登录的用户名
      *
      * @param context
@@ -82,41 +96,18 @@ public class JokeUtil {
      */
     public static String getUsername(Context context) {
         preferences =
-                context.getSharedPreferences(PREFERENCE_NAME, MODE);
+                context.getSharedPreferences(USER, MODE);
         return preferences.getString("username", "");
     }
-    //保存用户头像到本地
-    public static void saveUserImg(Bitmap userImage){
-if(previewTempFile!=null){
-    previewTempFile.delete();
-}else{
-    try {
-        previewTempFile.createNewFile();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    FileOutputStream fout=null;
-    try {
-        fout=new FileOutputStream(previewTempFile);
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    }
-    userImage.compress(Bitmap.CompressFormat.JPEG,100,fout);
-    try {
-        fout.flush();
-        fout.close();
-    } catch (IOException e) {
-        e.printStackTrace();
+    public static String getNickName(Context context) {
+        preferences =
+                context.getSharedPreferences(USER, MODE);
+        return preferences.getString("nickname", "");
     }
 
-}
-    }
-    //返回用户头像
-    public static Bitmap getUserImage(){
-        Bitmap userBitmap= BitmapFactory.decodeFile(previewTempFile.getPath());
-        return userBitmap;
-    }
-    public static void clearData(){
+
+    //清除选项存储数据方法
+    public static void clearData() {
         preferences.edit().clear().commit();
     }
 }
